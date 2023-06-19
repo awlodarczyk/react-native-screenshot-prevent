@@ -4,9 +4,9 @@
   "description": "This fork contains fully working blank screenshot on IOS13+ including screen recording",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "index.d.ts",
-  "react-native": "index",
-  "source": "index",
+  "types": "src/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
   "files": [
     "src",
     "lib",
