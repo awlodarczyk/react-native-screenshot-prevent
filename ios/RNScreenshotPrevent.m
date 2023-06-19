@@ -1,19 +1,29 @@
-
+#import <React/RCTBridge.h>
+#import <React/RCTConvert.h>
+#import <React/RCTEventDispatcher.h>
 #import "RNScreenshotPrevent.h"
 #import "UIImage+ImageEffects.h"
 
-@implementation RNScreenshotPrevent {
-    BOOL hasListeners;
-    BOOL enabled;
-    UIImageView *obfuscatingView;
-    UITextField *secureField;
+bool hasListeners = NO;
+@interface RNScreenshotPrevent()
 
-}
+@property (strong, nonatomic)   UIImageView *obfuscatingView;
+@property (strong, nonatomic)   UITextField *secureField;
+@property (assign, nonatomic) BOOL enabled;
+@end
+ 
+@implementation RNScreenshotPrevent
 
-RCT_EXPORT_MODULE();
+
+
+#pragma mark Initialization
+ 
+
 - (NSArray<NSString *> *)supportedEvents {
     return @[@"userDidTakeScreenshot"];
 }
+
+#pragma mark
 
 - (dispatch_queue_t)methodQueue
 {
@@ -37,20 +47,20 @@ RCT_EXPORT_MODULE();
                             name:UIApplicationUserDidTakeScreenshotNotification
                             object:nil];
 
-    hasListeners = TRUE;
+    hasListeners = YES;
 }
 
 - (void) stopObserving {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    hasListeners = FALSE;
+    hasListeners = NO;
 }
-
+RCT_EXPORT_MODULE()
 #pragma mark - App Notification Methods
 
 /** displays blurry view when app becomes inactive */
 - (void)handleAppStateResignActive {
-    if (self->enabled) {
+    if (self.enabled) {
         UIWindow    *keyWindow = [UIApplication sharedApplication].keyWindow;
         UIImageView *blurredScreenImageView = [[UIImageView alloc] initWithFrame:keyWindow.bounds];
 
@@ -61,21 +71,21 @@ RCT_EXPORT_MODULE();
 
         blurredScreenImageView.image = [viewImage applyLightEffect];
 
-        self->obfuscatingView = blurredScreenImageView;
-        [keyWindow addSubview:self->obfuscatingView];
+        self.obfuscatingView = blurredScreenImageView;
+        [keyWindow addSubview:self.obfuscatingView];
     }
 }
 
 /** removes blurry view when app becomes active */
 - (void)handleAppStateActive {
-    if  (self->obfuscatingView) {
+    if  (self.obfuscatingView) {
         [UIView animateWithDuration: 0.3
                          animations: ^ {
-                             self->obfuscatingView.alpha = 0;
+                            self.obfuscatingView.alpha = 0;
                          }
                          completion: ^(BOOL finished) {
-                             [self->obfuscatingView removeFromSuperview];
-                             self->obfuscatingView = nil;
+                             [self.obfuscatingView removeFromSuperview];
+                             self.obfuscatingView = nil;
                          }
          ];
     }
@@ -103,14 +113,14 @@ RCT_EXPORT_MODULE();
 -(void) addSecureTextFieldToView:(UIView *) view {
     UIView *rootView = [UIApplication sharedApplication].keyWindow.rootViewController.view;
     // fixes safe-area
-    secureField = [[UITextField alloc] initWithFrame:rootView.frame];
-    secureField.secureTextEntry = TRUE;
-    secureField.userInteractionEnabled = FALSE;
+    self.secureField = [[UITextField alloc] initWithFrame:rootView.frame];
+    self.secureField.secureTextEntry = TRUE;
+    self.secureField.userInteractionEnabled = FALSE;
 
-    [view sendSubviewToBack:secureField];
-    [view addSubview:secureField];
-    [view.layer.superlayer addSublayer:secureField.layer];
-    [[secureField.layer.sublayers objectAtIndex:0] addSublayer:view.layer];
+    [view sendSubviewToBack:self.secureField];
+    [view addSubview:self.secureField];
+    [view.layer.superlayer addSublayer:self.secureField.layer];
+    [[self.secureField.layer.sublayers objectAtIndex:0] addSublayer:view.layer];
 }
 
 // TODO: not working now, fix crash on _UITextFieldCanvasView contenttViewInvalidated: unrecognized selector sent to instance
@@ -120,7 +130,7 @@ RCT_EXPORT_MODULE();
             if(subview.secureTextEntry == TRUE) {
                 [subview removeFromSuperview];
                 subview.secureTextEntry = FALSE;
-                secureField.userInteractionEnabled = TRUE;
+                self.secureField.userInteractionEnabled = TRUE;
             }
         }
     }
@@ -128,13 +138,15 @@ RCT_EXPORT_MODULE();
 
 #pragma mark - Public API
 
-RCT_EXPORT_METHOD(enabled:(BOOL) _enable) {
-    self->enabled = _enable;
+RCT_EXPORT_METHOD(enabled:(BOOL)enable)
+{
+    self.enabled = enable;
 }
 
 /** adds secure textfield view */
-RCT_EXPORT_METHOD(enableSecureView){
-    if(secureField.secureTextEntry == false) {
+RCT_EXPORT_METHOD(enableSecureView)
+{
+    if(self.secureField.secureTextEntry == false) {
         UIView *view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
         for(UIView *subview in view.subviews) {
             [self addSecureTextFieldToView:subview];
@@ -143,8 +155,9 @@ RCT_EXPORT_METHOD(enableSecureView){
 }
 
 /** removes secure textfield from the view */
-RCT_EXPORT_METHOD(disableSecureView) {
-    secureField.secureTextEntry = false;
+RCT_EXPORT_METHOD(disableSecureView)
+{
+    self.secureField.secureTextEntry = false;
     UIView *view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
     for(UIView *subview in view.subviews) {
         [self removeSecureTextFieldFromView:subview];
