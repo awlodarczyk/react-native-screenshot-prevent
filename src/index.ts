@@ -1,10 +1,7 @@
-import {
-	NativeModules,
-	NativeEventEmitter
-} from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 import { useEffect } from 'react';
 
-const RNScreenshotPrevent = NativeModules.RNScreenshotPreventNative;
+const RNScreenshotPrevent = NativeModules.RNScreenshotPrevent;
 
 const eventEmitter = new NativeEventEmitter(RNScreenshotPrevent);
 /**
