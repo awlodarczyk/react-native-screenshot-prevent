@@ -9,10 +9,10 @@ Pod::Spec.new do |s|
   s.summary      = package['description']
   s.license      = package['license']
   s.authors      = package['author']
-  s.homepage     = package['repository']['url']
+  s.homepage     = package['repository']
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.platform     = :ios, "9.0"
-  s.source       = { :git => "https://github.com/killserver/react-native-screenshot-prevent.git", :tag => "master" }
+  s.source       = { :git => "https://github.com/awlodarczyk/react-native-screenshot-prevent.git", :tag => "main" }
   s.source_files  = "ios/**/*.{h,m}"
   s.requires_arc = true
 

@@ -35,20 +35,20 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/killserver/react-native-screenshot-prevent",
-  "author": "killserver",
+  "repository": "https://github.com/awlodarczyk/react-native-screenshot-prevent",
+  "author": "awlodarczyk",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/killserver/react-native-screenshot-prevent/issues"
+    "url": "https://github.com/awlodarczyk/react-native-screenshot-prevent/issues"
   },
-  "homepage": "https://github.com/killserver/react-native-screenshot-prevent#readme",
+  "homepage": "https://github.com/awlodarczyk/react-native-screenshot-prevent#readme",
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
     "@react-native-community/eslint-config": "^3.0.2",
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^28.1.2",
-    "@types/react": "~17.0.21",
+    "@types/react": "~18.0.35",
     "@types/react-native": "0.70.0",
     "del-cli": "^5.0.0",
     "eslint": "^8.4.1",
@@ -59,10 +59,10 @@
     "prettier": "^2.0.5",
     "react": "18.2.0",
     "react-native": "0.71.7",
-    "typescript": "^4.5.2"
+    "typescript": "^5.0.4"
   },
   "resolutions": {
-    "@types/react": "17.0.21"
+    "@types/react": "18.0.35"
   },
   "peerDependencies": {
     "react": "*",
